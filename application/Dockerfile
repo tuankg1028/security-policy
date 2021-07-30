@@ -1,0 +1,20 @@
+FROM node:10-alpine
+
+# Create app directory
+WORKDIR /usr/src/app
+
+
+
+COPY code/package*.json code/
+RUN cd code && npm install --production
+
+ADD code code
+
+# RUN ls -laR code/dist/*
+
+EXPOSE 8000
+
+#ADD code/entrypoint.sh /code/
+#COPY code/entrypoint.sh /code/entrypoint.sh
+# RUN chmod +x code/entrypoint.sh
+CMD ["node", "code/index.js"]
