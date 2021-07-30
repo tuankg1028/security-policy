@@ -1,18 +1,18 @@
 services:
-  # cloud-server:
-  #   environment:
-  #     NODE_TYPE: CLOUD_NODE
-  #   image: validation-process:0.0.1
+  cloud-server:
+    environment:
+      NODE_TYPE: CLOUD_NODE
+    image: security-policy:0.0.1
   mec-svc-1:
     environment:
       NODE_TYPE: EDGE_NODE
       REGION: bronx
     image: security-policy:0.0.1
-  # mec-svc-2:
-  #   environment:
-  #     NODE_TYPE: EDGE_NODE
-  #     REGION: brooklyn
-  #   image: validation-process:0.0.1
+  mec-svc-2:
+    environment:
+      NODE_TYPE: EDGE_NODE
+      REGION: brooklyn
+    image: security-policy:0.0.1
 version: '3.7'
 x-fogify:
   networks:
@@ -39,12 +39,12 @@ x-fogify:
         delay: 5ms
     name: edge-net-2
   nodes:
-  # - capabilities:
-  #     memory: 4G
-  #     processor:
-  #       clock_speed: 1400
-  #       cores: 4
-  #   name: cloud-server-node
+  - capabilities:
+      memory: 4G
+      processor:
+        clock_speed: 1400
+        cores: 4
+    name: cloud-server-node
   - capabilities:
       memory: 2G
       processor:
@@ -58,12 +58,12 @@ x-fogify:
         cores: 1
     name: car-node
   topology:
-  # - label: cloud-server
-  #   networks:
-  #   - internet
-  #   node: cloud-server-node
-  #   replicas: 1
-  #   service: cloud-server
+  - label: cloud-server
+    networks:
+    - internet
+    node: cloud-server-node
+    replicas: 1
+    service: cloud-server
   - label: mec-svc-1
     networks:
     - edge-net-1
@@ -71,13 +71,13 @@ x-fogify:
     node: edge-node
     replicas: 1
     service: mec-svc-1
-  # - label: mec-svc-2
-  #   networks:
-  #   - edge-net-2
-  #   - internet
-  #   node: edge-node
-  #   replicas: 1
-  #   service: mec-svc-2
+  - label: mec-svc-2
+    networks:
+    - edge-net-2
+    - internet
+    node: edge-node
+    replicas: 1
+    service: mec-svc-2
   scenarios:
   - name: scenario_1
     actions: 
