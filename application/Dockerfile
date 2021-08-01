@@ -1,5 +1,6 @@
-FROM node:10-alpine
-
+# FROM node:10-alpine
+FROM registry.scontain.com:5050/sconecuratedimages/apps:node-10.14-alpine
+ENV SCONE_HEAP=1G
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -17,4 +18,4 @@ EXPOSE 8000
 #ADD code/entrypoint.sh /code/
 #COPY code/entrypoint.sh /code/entrypoint.sh
 # RUN chmod +x code/entrypoint.sh
-CMD ["node", "code/index.js"]
+CMD SCONE_VERSION=1 node /myapp/app.js
