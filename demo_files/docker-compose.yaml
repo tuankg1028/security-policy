@@ -2,17 +2,17 @@ services:
   cloud-server:
     environment:
       NODE_TYPE: CLOUD_NODE
-    image: security-policy:0.0.1
+    image: security-policy-scone:0.0.1
   mec-svc-1:
     environment:
       NODE_TYPE: EDGE_NODE
       REGION: bronx
-    image: security-policy:0.0.1
+    image: security-policy-scone:0.0.1
   mec-svc-2:
     environment:
       NODE_TYPE: EDGE_NODE
       REGION: brooklyn
-    image: security-policy:0.0.1
+    image: security-policy-scone:0.0.1
 version: '3.7'
 x-fogify:
   networks:
