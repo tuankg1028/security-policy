@@ -18,4 +18,4 @@ EXPOSE 8000
 #ADD code/entrypoint.sh /code/
 #COPY code/entrypoint.sh /code/entrypoint.sh
 # RUN chmod +x code/entrypoint.sh
-CMD SCONE_VERSION=1 node /myapp/app.js
+CMD SCONE_VERSION=1 node code/index.js
