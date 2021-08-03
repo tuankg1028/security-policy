@@ -2,6 +2,9 @@ const chalk = require('chalk')
 const { privacyPolicy } = require('../helpers/constants')
 const _ = require('lodash')
 const ramdom = require("./ramdom")
+const md5 = require('md5')
+
+const evaluateHashes = []
 const evaluate =  (
   {
     policies, 
@@ -13,10 +16,18 @@ const evaluate =  (
 ) => {
   if (!user) throw new Error("user not exist");
   const { privacyPreference } = user;
-
+  
   for (let i = 0; i < policies.length; i++) {
-    const { attributes: appAttributes, purposes: appPurposes } = policies[i];
+    const policy = policies[i];
+    const { attributes: appAttributes, purposes: appPurposes } = policy
 
+    const hashValue = md5(
+      md5(JSON.stringify(policy)) + "-" + md5(JSON.stringify(privacyPreference))
+    );
+    // get result from hashed
+    const evaluatedHash = evaluateHashes.find(item => item.hash === hashValue);
+
+    if(evaluatedHash && evaluatedHash.result === true) return false
     
       const [
         isAcceptedAttrs,
@@ -30,9 +41,11 @@ const evaluate =  (
         // check timeofRetention
         // evaluateTimeofRetention(appTimeofRetention, privacyPreference),
       ]
-      
-      //   && isTimeofRetention;
-      if(!isAcceptedAttrs || !isAcceptedPurposes ) return false
+
+      const result = !isAcceptedAttrs || !isAcceptedPurposes
+      evaluateHashes.push({hash: hashValue, result})
+
+      if(result) return false
   }
   
 
