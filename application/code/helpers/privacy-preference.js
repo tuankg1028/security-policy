@@ -12,7 +12,8 @@ const evaluate =  (
     purposes: appPurposes,
     timeofRetention: appTimeofRetention,
   },
-  user
+  user,
+  times
 ) => {
   if (!user) throw new Error("user not exist");
   const { privacyPreference } = user;
@@ -20,15 +21,22 @@ const evaluate =  (
   for (let i = 0; i < policies.length; i++) {
     const policy = policies[i];
     const { attributes: appAttributes, purposes: appPurposes } = policy
-
+    
+    let start = Date.now();
     const hashValue = md5(
       md5(JSON.stringify(policy)) + "-" + md5(JSON.stringify(privacyPreference))
     );
-    // get result from hashed
-    const evaluatedHash = evaluateHashes.find(item => item.hash === hashValue);
+    let end = Date.now();
+    times.hash += parseFloat(end - start)
 
-    if(evaluatedHash && evaluatedHash.result === true) return false
+    // get result from hashed
+    start = Date.now();
+    const evaluatedHash = evaluateHashes.find(item => item.hash === hashValue);
+    end = Date.now();
+    times.finding += parseFloat(end - start)
     
+    if(evaluatedHash && evaluatedHash.result === true) return false
+      start = Date.now();
       const [
         isAcceptedAttrs,
         isAcceptedPurposes,
@@ -41,7 +49,9 @@ const evaluate =  (
         // check timeofRetention
         // evaluateTimeofRetention(appTimeofRetention, privacyPreference),
       ]
-
+      end = Date.now();
+      times.evaluate += parseFloat(end - start)
+      
       const result = !isAcceptedAttrs || !isAcceptedPurposes
       evaluateHashes.push({hash: hashValue, result})
 

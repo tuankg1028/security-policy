@@ -61,16 +61,18 @@ async function main() {
     })
 
     console.time("1")
+    const times1 = {hash: 0, finding: 0, evaluate: 0}
     users.forEach(user => {
       const result =  evaluate({
           policies: policies1,
-        }, user)
+        }, user, times1)
       // console.log(chalk.green(user.fullName), result)
     })
     console.timeEnd("1")
-
+    console.log("time1", times1)
 
     // 2
+    const times2 = {hash: 0, finding: 0, evaluate: 0}
     const extraPolicies2 = Array.from({length: 7}, () => {
       const privacyPolicyApp = { denyAttributes: [], denyPurposes:  []}
       generate(privacyPolicyApp, "category", 5)
@@ -95,19 +97,21 @@ async function main() {
     users.forEach(user => {
       const result =  evaluate({
           policies: policies2,
-        }, user)
+        }, user, times2)
       // console.log(chalk.green(user.fullName), result)
     })
     console.timeEnd("2")
+    console.log("time2", times2)
 
-
+    const times3 = {hash: 0, finding: 0, evaluate: 0}
     console.time("3")
     users.forEach(user => {
       const result =  evaluate({
           policies: app.policies,
-        }, user)
+        }, user, times3)
       // console.log(chalk.green(user.fullName), result)
     })
     console.timeEnd("3")
+    console.log("time3", times3)
 }
 main()
